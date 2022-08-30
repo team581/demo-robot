@@ -18,7 +18,6 @@ import frc.robot.localization.Localization;
 import frc.robot.match_metadata.*;
 import frc.robot.misc.exceptions.UnknownTargetRobotException;
 import frc.robot.superstructure.SuperstructureSubsystem;
-import frc.robot.superstructure.arm.*;
 import frc.robot.superstructure.commands.ArmDownAndShootCommand;
 import frc.robot.superstructure.commands.ArmDownAndSnarfCommand;
 import frc.robot.superstructure.commands.ArmUpAndShootCommand;
@@ -51,7 +50,6 @@ public class RobotContainer {
   private final UpperHubVisionSubsystem upperVisionSubsystem;
   private final CargoVisionSubsystem cargoVisionSubsystem;
   private final Swiffer swiffer;
-  private final Arm arm;
   private final SuperstructureSubsystem superstructureSubsystem;
   private final Lights lights;
   private final Localization localization;
@@ -72,7 +70,6 @@ public class RobotContainer {
     if (Constants.getMode() == Constants.Mode.REPLAY) {
       matchMetadataSubsystem = new MatchMetadataSubsystem(new MatchMetadataIOReplay());
       lights = new Lights(new LightsIOReplay());
-      arm = new Arm(new ArmIOReplay(), lights);
       swiffer = new Swiffer(new SwifferIOReplay(), lights);
       imuSubsystem = new ImuSubsystem(new ImuIOReplay());
       upperVisionSubsystem = new UpperHubVisionSubsystem(new UpperHubVisionIOReplay());
@@ -90,7 +87,6 @@ public class RobotContainer {
         case COMP_BOT:
           matchMetadataSubsystem = new MatchMetadataSubsystem(new MatchMetadataIOFms());
           lights = new Lights(new LightsIOReplay());
-          arm = new Arm(new ArmIONeos(), lights);
           swiffer = new Swiffer(new SwifferIOFalcon500(), lights);
           imuSubsystem = new ImuSubsystem(new ImuIOAdis16470());
           upperVisionSubsystem = new UpperHubVisionSubsystem(new UpperHubVisionIOReplay());
@@ -107,7 +103,6 @@ public class RobotContainer {
         case TEST_2020_BOT:
           matchMetadataSubsystem = new MatchMetadataSubsystem(new MatchMetadataIOFms());
           lights = new Lights(new LightsIORoborio());
-          arm = new Arm(new ArmIOReplay(), lights);
           swiffer = new Swiffer(new SwifferIOReplay(), lights);
           imuSubsystem = new ImuSubsystem(new ImuIOReplay());
           upperVisionSubsystem = new UpperHubVisionSubsystem(new UpperHubVisionIOReplay());
@@ -124,7 +119,6 @@ public class RobotContainer {
         case SIM_BOT:
           matchMetadataSubsystem = new MatchMetadataSubsystem(new MatchMetadataIOSim());
           lights = new Lights(new LightsIOSim());
-          arm = new Arm(new ArmIOSimNeos(), lights);
           swiffer = new Swiffer(new SwifferIOSimFalcon500(), lights);
           imuSubsystem = new ImuSubsystem(new ImuIOSim());
           upperVisionSubsystem = new UpperHubVisionSubsystem(new UpperHubVisionIOSim());
@@ -143,7 +137,7 @@ public class RobotContainer {
       }
     }
 
-    superstructureSubsystem = new SuperstructureSubsystem(swiffer, arm, lights);
+    superstructureSubsystem = new SuperstructureSubsystem(swiffer, lights);
     localization = new Localization(driveSubsystem, cargoVisionSubsystem, imuSubsystem);
 
     autonomousChooser =
@@ -165,7 +159,6 @@ public class RobotContainer {
     SmartDashboard.putData(upperVisionSubsystem);
     SmartDashboard.putData(cargoVisionSubsystem);
     SmartDashboard.putData(swiffer);
-    SmartDashboard.putData(arm);
     SmartDashboard.putData(superstructureSubsystem);
     SmartDashboard.putData(lights);
   }

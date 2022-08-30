@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.superstructure.arm.Arm;
-import frc.robot.superstructure.arm.ArmPosition;
 import frc.robot.superstructure.lights.LightsIO.Inputs;
 import frc.robot.superstructure.swiffer.Swiffer;
 import frc.robot.superstructure.swiffer.SwifferMode;
@@ -30,7 +28,6 @@ public class Lights extends SubsystemBase {
   private SwifferMode swifferState = SwifferMode.STOPPED;
   private boolean swifferAtGoal = true;
 
-  private ArmPosition armState = ArmPosition.UP;
   private boolean armAtGoal = true;
   private Color currentColor = Color.kBlack;
 
@@ -66,14 +63,13 @@ public class Lights extends SubsystemBase {
   }
 
   /** Sets the {@link Arm arm}'s state. */
-  public void setSubsystemState(ArmPosition armState, boolean atGoal) {
-    this.armState = armState;
+  public void setSubsystemState(boolean atGoal) {
     this.armAtGoal = atGoal;
   }
 
   private void chooseColor() {
     Color color;
-    LightsMode lightsMode;
+    LightsMode lightsMode = LightsMode.BLINK_FAST;
 
     switch (swifferState) {
       case STOPPED:
@@ -84,30 +80,6 @@ public class Lights extends SubsystemBase {
         break;
       case SNARFING:
         color = Color.kGreen;
-        break;
-      default:
-        // Should never happen
-        setColorForError();
-        return;
-    }
-
-    switch (armState) {
-      case UP:
-        switch (swifferState) {
-          case STOPPED:
-            lightsMode = armAtGoal && swifferAtGoal ? LightsMode.BLINK_SLOW : LightsMode.BLINK_FAST;
-            break;
-          case SHOOTING:
-            lightsMode = armAtGoal ? LightsMode.BLINK_FAST : LightsMode.BLINK_SLOW;
-            break;
-          default:
-            // Should never happen
-            setColorForError();
-            return;
-        }
-        break;
-      case DOWN:
-        lightsMode = armAtGoal && swifferAtGoal ? LightsMode.BLINK_FAST : LightsMode.BLINK_SLOW;
         break;
       default:
         // Should never happen
