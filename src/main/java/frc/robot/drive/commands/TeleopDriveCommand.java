@@ -39,9 +39,9 @@ public class TeleopDriveCommand extends CommandBase {
     final var slowMode = controller.leftTrigger.get();
     final var robotRelative = controller.rightTrigger.get();
 
-    var sidewaysPercentage = controller.getSidewaysPercentage();
-    var forwardPercentage = controller.getForwardPercentage();
-    var thetaPercentage = controller.getThetaPercentage();
+    var sidewaysPercentage = controller.getSidewaysPercentage() / 3;
+    var forwardPercentage = controller.getForwardPercentage() / 3;
+    var thetaPercentage = controller.getThetaPercentage() / 3;
 
     if (slowMode) {
       sidewaysPercentage *= 0.5;
