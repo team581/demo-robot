@@ -6,8 +6,6 @@ package frc.robot.superstructure.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.superstructure.SuperstructureSubsystem;
-import frc.robot.superstructure.arm.ArmPosition;
-import frc.robot.superstructure.arm.commands.ArmCommand;
 import frc.robot.superstructure.swiffer.SwifferMode;
 import frc.robot.superstructure.swiffer.commands.SwifferCommand;
 
@@ -17,11 +15,10 @@ public class ArmUpAndStopCommand extends ParallelCommandGroup {
   public ArmUpAndStopCommand(SuperstructureSubsystem superstructure) {
     addCommands(
         // Arm up
-        new ArmCommand(superstructure.arm, ArmPosition.UP),
         // Stop the flywheel
         new SwifferCommand(superstructure.swiffer, SwifferMode.STOPPED)
             .until(() -> superstructure.swiffer.atGoal(SwifferMode.STOPPED)));
 
-    addRequirements(superstructure, superstructure.arm, superstructure.swiffer);
+    addRequirements(superstructure, superstructure.swiffer);
   }
 }

@@ -7,8 +7,6 @@ package frc.robot.superstructure.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.superstructure.SuperstructureSubsystem;
-import frc.robot.superstructure.arm.ArmPosition;
-import frc.robot.superstructure.arm.commands.ArmCommand;
 import frc.robot.superstructure.swiffer.SwifferMode;
 import frc.robot.superstructure.swiffer.commands.SwifferCommand;
 
@@ -24,14 +22,12 @@ public class ArmDownAndShootCommand extends SequentialCommandGroup {
         // the lights that are are preparing to shoot.
         new InstantCommand(
             () -> superstructure.lights.setSubsystemState(SwifferMode.SHOOTING, false)),
-        // Arm down
-        new ArmCommand(superstructure.arm, ArmPosition.DOWN),
         // Shoot all cargo after the arm is down
         // Since the default superstructure mode is to lift the arm up and since this command is run
         // continuously, adding an end condition here can cause the arm to jump up briefly as the
         // command ends and restarts. We rely on the copilot to know when to cancel this command.
         new SwifferCommand(superstructure.swiffer, SwifferMode.SHOOTING));
 
-    addRequirements(superstructure, superstructure.arm, superstructure.swiffer);
+    addRequirements(superstructure, superstructure.swiffer);
   }
 }
